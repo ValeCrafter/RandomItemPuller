@@ -1,18 +1,19 @@
-use std::fs;
+#![windows_subsystem = "windows"]
 
-use iced::clipboard::read;
-use iced::futures::stream::ForEach;
+use std::fs;
 use iced::widget::{button, column, container, row, text, Column, Text};
 use iced::Length::Fill;
-use iced::{application, window, Application, Center, Color, Element, Pixels, Renderer, Subscription, Task, Theme};
+use iced::{Center, Color, Element, Pixels, Renderer, Subscription, Task, Theme};
 use iced::time;
 use iced::time::every;
 use std::time::Duration;
 
+
+
 pub fn main() -> iced::Result {
-    iced::application("counter", Counter::update, Counter::view)
-        .subscription(Counter::subscription)
-        .run_with(|| (Counter::new(), iced::Task::none()))
+    iced::application("RandomPicker", Randomizer::update, Randomizer::view)
+        .subscription(Randomizer::subscription)
+        .run_with(|| (Randomizer::new(), iced::Task::none()))
 }
 
 const TICK_TIME: usize = 50;
@@ -26,14 +27,14 @@ enum Message {
 }
 
 #[derive(Default)]
-struct Counter {
+struct Randomizer {
     name: String,
     names: Vec<(String, bool)>,
     name_size: Pixels,
     animating: bool,
     remaining_ticks: usize
 }
-impl Counter {
+impl Randomizer {
     fn new() -> Self {
         Self {
             name: String::new(),
@@ -44,12 +45,6 @@ impl Counter {
         }
     }
     fn update(&mut self, message: Message) {
-        // if self.names.len() == 0 {
-        //     self.names = read_names();
-        // }
-
-        self.name_size = 50.into();
-
         match message {
             Message::Reset => {
                 for name in &mut self.names {
