@@ -12,6 +12,7 @@ use std::time::Duration;
 
 pub fn main() -> iced::Result {
     iced::application("RandomPicker", Randomizer::update, Randomizer::view)
+        .theme(|_| Theme::Dark)
         .subscription(Randomizer::subscription)
         .run_with(|| (Randomizer::new(), iced::Task::none()))
 }
